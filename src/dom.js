@@ -142,7 +142,7 @@ dom.classList = {
 
 /**
  * @desc get elements by class name
- * @param node {Object} - the node to check for the class name (eg: document)
+ * @param node {Node} - the node to check for the class name (eg: document)
  * @param c {String} - the class name
  * @return node list {Array} with the elements that contain the class name
  */
@@ -176,4 +176,26 @@ dom.getElementsByClassName = function (node, c) {
         }
         return arr;
     }
-}
+};
+
+/**
+ * @desc Finds the next element sibling of the passed element.
+ * @param el {Node}
+ */
+dom.next = function(el) {
+    'use strict';
+
+    if (el.nextElementSibling) {
+        this.next = function(el) {
+            return el.nextElementSibling;
+        };
+    } else {
+        this.next = function(el) {
+            do {
+                el = el.nextSibling;
+            } while (el && el.nodeType !== 1);
+            return el;
+        };
+    }
+    return this.next(el);
+};
