@@ -1,7 +1,7 @@
 /**
  * @app domJS
  * @desc DOM Library
- * @version 0.1.2
+ * @version 0.1.3
  * @author George Raptis | http://georap.gr
  */
 var dom = {
@@ -144,5 +144,40 @@ var dom = {
         }
 
         return this.prev(el);
+    },
+    
+    select: function(el) { // IE8+
+        'use strict';
+        return document.querySelector(el);
+    },
+
+    selectAll: function(els, callback) { // IE8+
+        'use strict';
+        
+        var elsArr = document.querySelectorAll(els),
+            idx = 0,
+            elsLen = elsArr.length;
+        
+        if (typeof callback === 'undefined' || typeof callback !== 'function') {
+            return elsArr;
+        } else {
+            // return [].map.call(elsArr, callback);
+            // return [].slice.call(elsArr).forEach(callback);
+            for (; idx < elsLen; idx++) {
+                callback(elsArr[idx], idx, elsArr);
+            }
+        }
+        
+        return this;
+    },
+    
+    walk: function(node, func) {
+        'use strict';
+        func(node);
+        node = node.firstChild;
+        while (node) {
+            this.walk(node, func);
+            node = node.nextSibling;
+        }
     }
 };
